@@ -1,8 +1,5 @@
 from flask import Blueprint, request, jsonify, make_response
 
-# Schema
-from src.schemas.schedule_schema import ScheduleSchema
-
 #  Service
 from src.controller.schedule_controller import ScheduleController
 
