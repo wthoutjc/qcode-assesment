@@ -8,8 +8,8 @@ from src.controller.schedule_controller import ScheduleController
 
 schedule_bp = Blueprint('schedule', __name__)
 
-@schedule_bp.route('/schedules', defaults={"id": None}, methods=['GET', 'POST'])
-@schedule_bp.route('/schedules/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+@schedule_bp.route('/schedules', defaults={"id": None})
+@schedule_bp.route('/schedules/<int:id>')
 def schedule_route(id:int):
     """
     This is the schedule route that gets all schedules, gets a schedule by id, creates a schedule, updates a schedule and deletes a schedule.
@@ -27,37 +27,12 @@ def schedule_route(id:int):
     404:
         description: The schedule was not found.
     """
-    if request.method == "GET":
-        if id:
-            response, status = ScheduleController.get_schedule_by_id(id)
-        else:
-            response, status = ScheduleController.get_schedules()
-        return make_response(jsonify(response), status)
-    elif request.method == "POST":
-        schedule_data = request.get_json()
-        
-        # Validate data
-        errors = ScheduleSchema().validate(schedule_data)
-        if errors:
-            return make_response(jsonify({'error': errors}), 400)
-        
-        response, status = ScheduleController.create_schedule(schedule_data)
-        return make_response(jsonify(response), status)
-    elif request.method == "PUT":
-        schedule_data = request.get_json()
-        
-        # Validate data
-        errors = ScheduleSchema().validate(schedule_data)
-        if errors or not id:
-            return make_response(jsonify({'error': errors}), 400)
-        
-        response, status = ScheduleController.update_schedule(id, schedule_data)
-        return make_response(jsonify(response), status)
-    elif request.method == "DELETE":
-        if id:
-            response, status = ScheduleController.delete_schedule(id)
-            return make_response(jsonify(response), status)
-        return make_response(jsonify({'message': 'Schedule not found'}), 404)
+    if id:
+        response, status = ScheduleController.get_schedule_by_id(id)
+    else:
+        response, status = ScheduleController.get_schedules()
+    return make_response(jsonify(response), status)
+
 
 @schedule_bp.route('/schedules/<string:day>', methods=['GET'])
 def schedule_by_day_route(day:str):

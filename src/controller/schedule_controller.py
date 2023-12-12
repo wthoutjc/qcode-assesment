@@ -1,37 +1,12 @@
 import datetime
 
 # Model
-from src.models.models import Schedules, db
-from sqlalchemy.exc import IntegrityError
+from src.models.models import Schedules
 
 # Utils
 from src.utils.add_to_time import add_to_time
-from src.utils.str_to_time import str_to_time
 
 class ScheduleController:
-    @staticmethod
-    def create_schedule(data: dict):
-        """
-        This is the schedule controller that creates a schedule.
-        ---
-        parameters:
-        - data (dict): The data of the schedule.
-        responses:
-        200:
-            description: The schedule was successfully created.
-        400:
-            description: The schedule was not successfully created.
-        """
-        start_time = datetime.datetime.strptime(data['start_time'], '%H:%M:%S').time()
-        new_schedule = Schedules(day=data['day'], start_time=start_time, duration=data['duration'], id_service=data['id_service'])
-        db.session.add(new_schedule)
-        try:
-            db.session.commit()
-            return { 'message': 'Schedule created successfully' }, 200
-        except IntegrityError:
-            db.session.rollback()
-            return { 'message': 'Schedule already exists' }, 400
-
     @staticmethod
     def get_schedules():
         """
@@ -82,49 +57,6 @@ class ScheduleController:
         schedule = Schedules.query.filter_by(day=day).all()
         if schedule:
             return { 'schedule': [schedule.serialize() for schedule in schedule] }, 200
-        return { 'message': 'Schedule not found' }, 404
-
-    @staticmethod
-    def update_schedule(id_schedule: int, data: dict):
-        """
-        This is the schedule controller that updates a schedule.
-        ---
-        parameters:
-        - id_schedule (int): The id of the schedule.
-        - data (dict): The data of the schedule.
-        responses:
-        200:
-            description: The schedule was successfully updated.
-        404:
-            description: The schedule was not found.
-        """
-        schedule = Schedules.query.get(id_schedule)
-        if schedule:
-            schedule.day = data['day']
-            schedule.start_time = datetime.datetime.strptime(data['start_time'], '%H:%M:%S').time()
-            schedule.duration = data['duration']
-            db.session.commit()
-            return { 'message': 'Schedule updated successfully' }, 200
-        return { 'message': 'Schedule not found' }, 404
-    
-    @staticmethod
-    def delete_schedule(id_schedule: int):
-        """
-        This is the schedule controller that deletes a schedule.
-        ---
-        parameters:
-        - id_schedule (int): The id of the schedule.
-        responses:
-        200:
-            description: The schedule was successfully deleted.
-        404:
-            description: The schedule was not found.
-        """
-        schedule = Schedules.query.get(id_schedule)
-        if schedule:
-            db.session.delete(schedule)
-            db.session.commit()
-            return { 'message': 'Schedule deleted successfully' }, 200
         return { 'message': 'Schedule not found' }, 404
     
     # Assesment METHOD

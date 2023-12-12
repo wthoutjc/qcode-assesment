@@ -6,7 +6,6 @@ from flask_cors import CORS
 
 # Routes
 from src.routes.schedule import schedule_bp
-from src.routes.service import service_bp
 
 # Database
 from src.models.models import db
@@ -26,7 +25,6 @@ def init_app():
 
     # Blueprints
     app.register_blueprint(schedule_bp)
-    app.register_blueprint(service_bp)
 
     # Swagger
     SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
