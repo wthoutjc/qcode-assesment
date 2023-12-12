@@ -1,0 +1,269 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de Servicios",
+    "version": "1.0"
+  },
+  "paths": {
+    "/schedules": {
+      "get": {
+        "summary": "Obtener todas las citas",
+        "responses": {
+          "200": {
+            "description": "Las citas se recuperaron con éxito"
+          },
+          "400": {
+            "description": "No se pudieron recuperar las citas"
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear una nueva cita",
+        "parameters": [
+          {
+            "name": "schedule",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Schedule"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La cita se creó con éxito"
+          },
+          "400": {
+            "description": "No se pudo crear la cita"
+          }
+        }
+      }
+    },
+    "/schedules/{id}": {
+      "get": {
+        "summary": "Obtener una cita por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La cita se recuperó con éxito"
+          },
+          "404": {
+            "description": "No se encontró la cita"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualizar una cita por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "schedule",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Schedule"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La cita se actualizó con éxito"
+          },
+          "400": {
+            "description": "No se pudo actualizar la cita"
+          },
+          "404": {
+            "description": "No se encontró la cita"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar una cita por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La cita se eliminó con éxito"
+          },
+          "404": {
+            "description": "No se encontró la cita"
+          }
+        }
+      }
+    },
+    "/available-appointment/{day}": {
+      "get": {
+        "summary": "Obtener citas disponibles por día",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Las citas disponibles se recuperaron con éxito"
+          },
+          "400": {
+            "description": "No se pudieron recuperar las citas disponibles"
+          },
+          "404": {
+            "description": "No se encontraron citas disponibles"
+          }
+        }
+      }
+    },
+    "/services": {
+      "get": {
+        "summary": "Obtener todos los servicios",
+        "responses": {
+          "200": {
+            "description": "Los servicios se recuperaron con éxito"
+          },
+          "400": {
+            "description": "No se pudieron recuperar los servicios"
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear un nuevo servicio",
+        "parameters": [
+          {
+            "name": "service",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Service"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El servicio se creó con éxito"
+          },
+          "400": {
+            "description": "No se pudo crear el servicio"
+          }
+        }
+      }
+    },
+    "/services/{id}": {
+      "get": {
+        "summary": "Obtener un servicio por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El servicio se recuperó con éxito"
+          },
+          "404": {
+            "description": "No se encontró el servicio"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualizar un servicio por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "service",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Service"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El servicio se actualizó con éxito"
+          },
+          "400": {
+            "description": "No se pudo actualizar el servicio"
+          },
+          "404": {
+            "description": "No se encontró el servicio"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un servicio por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El servicio se eliminó con éxito"
+          },
+          "404": {
+            "description": "No se encontró el servicio"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Service": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Schedule": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string"
+        },
+        "start_time": {
+          "type": "string",
+          "format": "time"
+        },
+        "duration": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
